@@ -1,0 +1,79 @@
+{
+  "name": "smokejs",
+  "version": "3.1.0",
+  "description": "Smoke form validation and components for Bootstrap",
+  "license": "LGPL",
+  "author": {
+    "name": "Alfredo Barron"
+  },
+  "homepage": "https://github.com/alfredobarron/smoke",
+  "keywords": [
+    "html",
+    "css",
+    "js",
+    "JavaScript",
+    "JQuery",
+    "plugin",
+    "bootstrap",
+    "front-end",
+    "web",
+    "Form validation",
+    "Components",
+    "helpers"
+  ],
+  "main": "index.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "Gruntfile.js",
+    "bower.json",
+    "package.json"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alfredobarron/smoke.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alfredobarron/smoke/issues"
+  },
+  "devDependencies": {
+    "bower": "^1.3.12",
+    "grunt": "^0.4.5",
+    "grunt-contrib-compress": "^0.13.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-cssmin": "^0.12.2",
+    "grunt-contrib-uglify": "^0.8.0",
+    "grunt-gh-pages": "^0.10.0",
+    "grunt-wiredep": "^2.0.0"
+  },
+  "gitHead": "a2a0cd01c31474c783e8ef5213d3b78e8432da9d",
+  "_id": "smokejs@3.1.0",
+  "_shasum": "ec0f712b311619d2e12743ed42f3a9778125e887",
+  "_from": "smokejs@latest",
+  "_npmVersion": "2.14.12",
+  "_nodeVersion": "4.2.6",
+  "_npmUser": {
+    "name": "alfredobarronc",
+    "email": "alfredobarronc@gmail.com"
+  },
+  "dist": {
+    "shasum": "ec0f712b311619d2e12743ed42f3a9778125e887",
+    "tarball": "https://registry.npmjs.org/smokejs/-/smokejs-3.1.0.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "alfredobarronc",
+      "email": "alfredobarronc@gmail.com"
+    }
+  ],
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/smokejs-3.1.0.tgz_1473084322462_0.5067630286794156"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/smokejs/-/smokejs-3.1.0.tgz"
+}
