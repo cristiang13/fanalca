@@ -209,7 +209,7 @@ Excel::selectSheets('PASO 4 INF DE CUPOS')->load($ruta,function($reader){
                   }
                       // codigo para evitar duplicdo de llave primaria
                     $count = DB::table('detpedidos')->where('no_doc', $value->nro_documento)->where('articulo_id', $id_articulo)->where('sucursal_id', $id_cliente)->count();
-                  //  if ($count==0) {
+                    if ($count==0) {
                       $det_pedido = new Detpedidos;
                       $det_pedido->no_doc= $value->nro_documento;
                       $det_pedido->sucursal_id=  $id_cliente;
@@ -218,18 +218,14 @@ Excel::selectSheets('PASO 4 INF DE CUPOS')->load($ruta,function($reader){
                       $det_pedido->marca_update=0;
                       $det_pedido->cant_pendiente= $value->cant_pendiente;
                       $det_pedido->save();
-                    /*} ojooo falta corregir la condicion else
+                    }
                     elseif ($count>0) {
-                      $cant_ped = DB::table('detpedidos')->where('no_doc', $value->nro_documento)->where('articulo_id', $id_articulo)->where('sucursal_id', $id_cliente)->value('cant_pedida');
-                      $cant_pend = DB::table('detpedidos')->where('no_doc', $value->nro_documento)->where('articulo_id', $id_articulo)->where('sucursal_id', $id_cliente)->value('cant_pendiente');
-
-                      $cant_ped = $cant_ped + $value->cantpedida;
-                      $cant_pend = $cant_pend + $value->cant_pendiente;
-
-                      DB::table('detpedidos')->where('no_doc', $value->nro_documento)->where('articulo_id', $id_articulo)->where('sucursal_id', $id_cliente)->update(['cant_pedida' => $cant_ped,'cant_pendiente' => $cant_pend ]);
 
 
-                    }*/
+                      DB::table('detpedidos')->where('no_doc', $value->nro_documento)->where('articulo_id', $id_articulo)->where('sucursal_id', $id_cliente)->update(['cant_pedida' => $value->cant_pedida,'cant_pendiente' => $value->cant_pendiente]);
+
+
+                    }
 
                     //$xcliente= DB::table('clientes')->where('razon_sucursal', 'OSORIO RIVERO CIRO ALFONSO OCAÑA CL 10')->value('id');
 

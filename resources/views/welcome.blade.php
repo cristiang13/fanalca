@@ -81,7 +81,13 @@
     <body>
 
   <main>
+
+
     <center>
+
+      <div class="link" style="padding-top:5%" >
+        @yield('content')
+      </div>
 
        <div class="content col-xs-1" align="center" style="padding-top:500px;height:100px">
                 <div class="title">

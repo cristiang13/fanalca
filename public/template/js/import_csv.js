@@ -2,12 +2,37 @@
     "ordering": false
 } );*/
 
+$.extend( $.fn.dataTable.defaults, {
+    responsive: true
+} );
+
+
 $(document).ready(function(){
 
   $("#content").load("/progviaje table");
 
-
 });
+
+$(document).ready(function() {
+    $('#usuarios').DataTable({
+      "language": {
+          "lengthMenu": "Mostrar _MENU_ registros por página",
+          "zeroRecords": "No se encontro nada - lo siento",
+          "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "infoEmpty": "No hay registros disponibles",
+          "emptyTable":"Ningún dato disponible en esta tabla",
+          "search":"Buscar:",
+          "paginate": {
+         "first":      "Primero",
+         "last":       "Último",
+         "next":       "Siguiente",
+         "previous":   "Anterior"
+         },
+          "infoFiltered": "(filtered from _MAX_ total records)"
+      }
+
+    });
+} );
 
 
 
@@ -170,16 +195,23 @@ $(document).on("submit",".form_entrada",function(e){
 
                      var x=typeof d.msg;
                      var id=d.articulo_id;
+                     var aux_id=d.aux_id;
+                     var no_doc= d.aux_no_doc;
+                     var valor_pedido= d.aux_valor_pedido;
                      $("#"+id+"").text(d.msg);
+                    $("#"+aux_id+"").text(d.aux_cant_pend);
+                    $("#"+no_doc+"").text(d.aux_valor_pedido);
                      $("#content").load("/progviaje table");
-
 
                      if (x==='number') {
                        $.smkAlert({
-                         text: 'Programación exitosa, quedan  '+d.msg+' und. disponibles.',
+                         text: 'Programación exitosa.',
+                         position:'top-center',
                          type: 'success',
 
                        });
+
+
 
 
 
@@ -249,7 +281,10 @@ $(document).on("submit",".form_entrada",function(e){
              },
             //si ha ocurrido un error
             error: function(data){
-               alert("ha ocurrido un error") ;
+            // $("#"+divresul+"").html('$("#cargador_empresa"').html());
+            $("#"+divresul+"").html($("#msg_error").html());
+
+
 
             }
         });
@@ -261,9 +296,9 @@ function format ( d ) {
     // `d` is the original data object for the row
     return '<table class="display" style="padding-left:50px;">'+
         '<tr "border: none">'+
-            '<td style=>Cantidad pedida:</td>'+
+            '<td style="border: none">Cantidad pedida:</td>'+
             '<td style="border: none">'+d[2]+'</td>'+
-            '<td>desc_Cantidad pendiente:</td>'+
+            '<td style="border: none">Cantidad pendiente:</td>'+
             '<td>'+d[3]+'</td>'+
         '</tr>'+
         '<tr>'+
@@ -299,7 +334,7 @@ $(document).ready(function($datos) {
 } );
 
 
-function formato ( d ) {
+/*function formato ( d ) {
     // `d` is the original data object for the row
     return '<table class="display" style="padding-left:50px;">'+
         '<tr "border: none">'+
@@ -310,25 +345,26 @@ function formato ( d ) {
         '</tr>'+
         '<tr>'+
     '</table>';
-}
+}*/
 
 $(document).ready(function($datos){
 
   var table = $('#table_programacion').DataTable({
-    "columnDefs": [
+    responsive: true,
+  /*  "columnDefs": [
           {
               "targets": [ 5 ],
-              "visible": false
+              "visible": true
           },
           {
               "targets": [ 6 ],
-              "visible": false
+              "visible": true
 
           }
-      ]
+      ]*/
   });
   // Add event listener for opening and closing details
-  $('#table_programacion tbody').on('click', 'td.details-control', function () {
+/*  $('#table_programacion tbody').on('click', 'td.details-control', function () {
       var tr = $(this).closest('tr');
       var row = table.row(tr);
 
@@ -342,7 +378,7 @@ $(document).ready(function($datos){
           row.child( formato(row.data()) ).show();
           tr.addClass('shown');
       }
-  } );
+  } );*/
 
 
 });

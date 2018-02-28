@@ -38,7 +38,7 @@ return [
     'digits_between'       => 'El campo :attribute debe contener entre :min y :max dígitos.',
     'dimensions'           => 'El campo :attribute tiene dimensiones inválidas.',
     'distinct'             => 'El campo :attribute tiene un valor duplicado.',
-    'email'                => 'El campo :attribute no corresponde con una dirección de e-mail válida.',
+    'email'                => 'No corresponde con una dirección de correo válida.',
     'file'                 => 'El campo :attribute debe ser un archivo.',
     'filled'               => 'El campo :attribute es obligatorio.',
     'exists'               => 'El campo :attribute no existe.',

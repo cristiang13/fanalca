@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
   <head>
     <!-- Fonts -->
@@ -8,6 +8,7 @@
     <!-- Styles -->
     <!-- Styles -->
     <style>
+
     .navbar {
 
       background-color: #fff;
@@ -116,9 +117,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
     <meta name="description" content="">
     <meta name="author" content="">
-    <title >Programacion de viajes </title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Bootstrap core CSS -->
 
@@ -150,62 +155,97 @@
       <img src="{{asset("img/logo.jpg")}}"  style="width: 173px; height: 60px;" alt="">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon"> </span>
     </button>
+
 
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent" >
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item ">
-          <a class="nav-link" href="{{ url('/import/disponibilidad') }}">Importar</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{url('/cupos')}}">Créditos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{url('/stock')}}">Stock</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url('/detpedidos') }}">Datos</a>
-        </li>
-        <li class="nav-item ">
-          <a class="nav-link" href="{{url('/progviaje')}}">Programación</a>
-        </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{{ url('/import/disponibilidad') }}">Importar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url('/cupos')}}">Créditos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url('/stock')}}">Stock</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url('/detpedidos') }}">Datos</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{{url('/progviaje')}}">Programación</a>
+          </li>
+
+          @if ( (Auth::user()->role)== 'administrador' )
+            <li class="nav-item ">
+              <a class="nav-link" href="{{url('/users')}}">Usuarios</a>
+            </li>
+          @endif
+
+          <li class="nav-item ">
+            <a class="nav-link" href="{{url('/articulos')}}">Articulos</a>
+          </li>
+      </ul>
+      <ul class="navbar-nav ml-auto navbar-right">
+
+        <li class="dropdown" style="width:180px;">
+
+           <a class="nav-link dropdown-toggle"  href="#"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
+               {{ Auth::user()->first_name }}
+           </a>
+          <div class=" dropdown-menu" aria-labelledby="alertsDropdown">
 
 
+           <a class="dropdown-item " href={{route('users.edit', Auth::user()->id)}}>
+
+             perfil usuario
+
+           </a>
+           <a class="dropdown-item " href="{{url('/updatePassword')}}">
+
+             cambiar contraseña
+
+           </a>
+           <div class="dropdown-divider"></div>
+           <a class="dropdown-item " href="{{ route('logout') }}"
+               onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+
+             <strong>cerrar sesión</strong>
+
+           </a>
+
+             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                 {{ csrf_field() }}
+             </form>
+
+
+         </div>
+        </li>
 
       </ul>
-
-     <ul class="navbar-nav ml-auto">
-       <li class="nav-item dropdown" style="width:158px;">
-
-          <a class="nav-link dropdown-toggle"   data-toggle="dropdown" >
-              {{ Auth::user()->first_name }}
-          </a>
-         <div class=" dropdown-menu ">
-          <a class="navbar-link" href="{{ route('logout') }}"
-              onclick="event.preventDefault();
-                       document.getElementById('logout-form').submit();">
-            <i class="fa fa-fw fa-sign-out"></i>
-            cerrar sesión</a>
-
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                {{ csrf_field() }}
-            </form>
-
-        </div>
-       </li>
-
-     </ul>
-
-
     </div>
+
+
   </nav>
 
 
 
  <div class="container-fluid">
    <!-- animacion cargador  -->
+   <div style="display: none;" id="msg_error" align="center">
+       <br>
+       <div class="alert alert-danger alert-dismissible fade show" role="alert">
+         se detuvo la importacion, error.
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+             <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+
+    <br>
+   </div>
  <div style="display: none;" id="cargador_empresa" align="center">
      <br>
 
@@ -218,12 +258,15 @@
 
   <br>
 </div>
+
 <div class="row">
   <div class="col-md-1">
 
   </div>
   <div class="col-md-10" style="padding-top:50px;">
     @yield('content')
+
+
   </div>
   <div class="col-md-1">
 

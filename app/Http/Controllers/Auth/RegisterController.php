@@ -27,17 +27,21 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/welcome';
+    protected $redirectTo = '/users';
+
+
 
     /**
      * Create a new controller instance.
      *
      * @return void
+    * public function __construct()
+    *   {
+    *       $this->middleware('guest');
+      * }
      */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
+  //  toca quitarlo por que inhabilita la opcion de register del view users.index
+
 
     /**
      * Get a validator for an incoming registration request.
@@ -77,9 +81,10 @@ class RegisterController extends Controller
             'first_lastname'=>$data['first_lastname'],
             'last_lastname'=>$data['last_lastname'],
             'cellphone'=>$data['cellphone'],
+            'role'=>$data['role'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
 
-        ]);
+        ])->with('msg', 'Usuario registrado');
     }
 }

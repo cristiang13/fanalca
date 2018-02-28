@@ -17,9 +17,9 @@
 
 
 
-      <div class="table-responsive">
+      <div style="overflow-x:auto;" >
 
-        <table id="table_progViaje" class="table table-condensed" cellspacing="0">
+        <table id="table_progViaje" class="table table-condensed " cellspacing="0">
           <thead>
             <tr>
 
@@ -44,7 +44,7 @@
 
               <tr>
 
-                <td>{{$listado->no_viaje}}</td>
+                <td class="" style="padding-right: 0px; padding-left:0px; font-size:14px">{{$listado->no_viaje}}</td>
                 <td>{{$listado->no_doc}}</td>
                 <td>{{$listado->razon_social}}</td>
                 <td>{{$listado->razon_surcursal}}</td>

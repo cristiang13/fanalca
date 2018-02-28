@@ -1,35 +1,31 @@
 @extends('template')
 
 @section('content')
-
-
-
-
+ <h1>Facturas de envío</h1>
+ <br>
   <div class="card mb-3">
       <form class="" action="{{ route('detpedidos.completar') }}" method="post">
-    <div class="card-header">
-      <i class="fa fa-table"></i>
-      Tabla de datos pedidos
 
-        <button type="submit" class="btn btn-danger  btn-sm" style="float: right;">Programar viaje</button>
-    </div>
+
+      <!--  <button type="submit" class="btn btn-danger  btn-sm" style="float: right; cursor: pointer; border-radius: 0px;">Programar viaje</button> -->
+
 
     <div class="card-body">
 
 
 
-      <div class="table-responsive">
+      <div style="overflow-x:auto;">
      <input type="hidden" name="_token" id="_token"  value="<?= csrf_token(); ?>">
         <table class=" table "  id="example" cellspacing="0">
           <thead>
             <tr>
                <th></th>
-              <th>No Documento</th>
+              <th>No. Factura</th>
               <th>Cantidad pedida</th>
               <th>Cantidad pendiente</th>
               <th>Razon Social Cliente </th>
               <th>Referencia</th>
-              <th>descripcion detalle</th>
+              <th>Color</th>
               <th>precio</th>
               <th>disponibilidad real</th>
 
@@ -68,7 +64,7 @@
                 <td>{{$listado->razon_surcursal}}</td>
                 <td>{{$listado->referencia}}</td>
                 <td>{{$listado->desc_detalle}}</td>
-                <td>{{$listado->precio}}</td>
+                <td>$ {{number_format($listado->precio)}}</td>
                 <td>{{$aux}}</td>
                 <td> <input type="checkbox" name="check_list[]" value= '{{$value}}'></td>
 
@@ -81,8 +77,12 @@
 
 
           </tbody>
+
         </table>
+        <br>
+          <button type="submit" class="btn btn-danger  " style="float: right; cursor: pointer; border-radius: 0px;">Programar envío</button>
       </div>
+
     </div>
 
     </form>

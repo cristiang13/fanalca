@@ -88,7 +88,7 @@
       </button>
       @if (Auth::guest())
 
-      <div class="collapse navbar-collapse " id="navbarSupportedContent" >
+    <!--  <div class="collapse navbar-collapse " id="navbarSupportedContent" >
 
           <ul class="navbar-nav mr-auto" style="padding-left:75%;">
 
@@ -100,7 +100,7 @@
             </li>
 
           </ul>
-      </div>
+      </div>-->
       @else
 
        <div class="collapse navbar-collapse " id="navbarSupportedContent1" >
@@ -109,6 +109,9 @@
               <li class="nav-item dropdown">
                 <a class="nav-item nav-link dropdown-toggle mr-md-2" href="{{ route('login') }}" data-toggle="dropdown" aria-expanded="true" aria-haspopup="true">{{ Auth::user()->first_name }} <span class="caret"></span></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
+                  <a class="dropdown-item "href="{{ route('home') }}">
+                      menu principal
+                  </a>
                     <a class="dropdown-item "href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();" >Cerrar sesión
@@ -120,12 +123,8 @@
 
                   </div>
               </li>
-            <!--  <li class="nav-item ">
-                <a class="nav-link" href="{{ route('register') }}">registrar</a>
-              </li>-->
-
             </ul>
-    </div>
+      </div>
 
 
       @endif
@@ -142,7 +141,7 @@
 
 
     <script src={{asset("template/vendor/jquery/jquery.min.js")}}></script>
-  <script src={{asset("template/js/materialize.min.js")}}></script>
+   <script src={{asset("template/js/materialize.min.js")}}></script>
 
 
 

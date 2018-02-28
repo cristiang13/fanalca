@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Articulo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use DB;
 
 class ArticuloController extends Controller
 {
@@ -14,7 +16,9 @@ class ArticuloController extends Controller
      */
     public function index()
     {
-        //
+      $articulos= DB::table('articulos')->get();
+    //  dd($articulos);
+      return view('articulos.index',compact('articulos'));
     }
 
     /**
@@ -24,7 +28,7 @@ class ArticuloController extends Controller
      */
     public function create()
     {
-        //
+        return view('articulos.create');
     }
 
     /**
@@ -35,7 +39,14 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $input = $request->all();
+      //dd($input);
+      $articulo = Articulo::create($input);
+      //dd($articulo);
+      $articulo->save();
+
+      //Flash('Create articulo Complete!', 'success');
+      return redirect('articulos');
     }
 
     /**
@@ -55,9 +66,11 @@ class ArticuloController extends Controller
      * @param  \App\Articulo  $articulo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Articulo $articulo)
+    public function edit($id)
     {
-        //
+      $articulo = DB::table('articulos')->where('id',$id)->get();
+      //dd($articulo);
+      return view('articulos.edit', compact('articulo'));
     }
 
     /**
@@ -67,9 +80,23 @@ class ArticuloController extends Controller
      * @param  \App\Articulo  $articulo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Articulo $articulo)
+    public function update(Request $request, $id)
     {
-        //
+      $articulo = Articulo::where('id',$id)->first();
+    //$articulo= Articulo::findOrFail($id);
+
+
+      $articulo->referencia= $request->referencia;
+      $articulo->desc_detalle= $request->detalle;
+      $articulo->precio_unit= $request->precio;
+
+      $aux = new Articulo;
+      $aux = $articulo;
+      $aux->save();
+
+
+    //  $articulo->fill($request)->save();
+      return redirect('articulos');
     }
 
     /**
@@ -78,8 +105,9 @@ class ArticuloController extends Controller
      * @param  \App\Articulo  $articulo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Articulo $articulo)
+    public function destroy($id)
     {
-        //
+      Articulo::findOrFail($id)->delete();
+      return redirect('articulos');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Detpedidos;
 use App\Stock;
 use App\Articulo;
+use App\SucurClient;
 use Illuminate\Http\Request;
 use Illuminate\Database\Query\Builder;
 use App\Http\Controllers\Controller;
@@ -76,10 +77,11 @@ class DetpedidosController extends Controller
 
         $data= $request->all();
 
-      // dd($data);
+       //dd($data);
        $no_doc=$data['id_doc'];
        $sucursal_id=$data['sucursal_id'];
        $articulo_id=$data['articulo_id'];
+       $aux_id= $data['id_doc'].$data['articulo_id'];
        $marca_update=1;
        $id_inventario =  Stock::orderBy('id', 'desc')->first()->id;
 
@@ -89,160 +91,51 @@ class DetpedidosController extends Controller
        $articulo= DB::table('articulos')->where('id', $articulo_id)->value('referencia');
        $disponibilidad= DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->value('dispo_real');
 
-    /*    $prog_art= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
-                               ->where('sucursal_id', $sucursal_id)
-                               ->update(['cant_programado' => $data['cant_prog'],'costo_programado' =>$data['cost_prog'] ,'no_viaje'=>$data['num_viaje'],'cond_pago'=>$data['condicion_pago'],'marca_update'=> $marca_update ]);
-
-
-
-
-
-     $validationsql= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
-                              ->where('sucursal_id', $sucursal_id)->where('cant_programado', $data['cant_prog'])->where('costo_programado',$data['cost_prog'])
-                              ->where('no_viaje',$data['num_viaje'])->where('cond_pago',$data['condicion_pago'])->where('marca_update', $marca_update)->count();
-    */
-      // $dispo_art='hola';
-    //  return  $dispo_art;
-
-        //  echo ''.$articulo.'a la factura No:'. $no_doc;
   if ($data['cant_prog']>$data['cant_pedida']) {
     return response()->json([
       'msg' => "La cantidad programada excede la cantidad pedida",
       ]);
   }else {
-    if ($disponibilidad>= $data['cant_prog']) {
-
-      $prog_art= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
-                                   ->where('sucursal_id', $sucursal_id)
-                                   ->update(['cant_programado' => $data['cant_prog'],'costo_programado' =>$data['cost_prog'] ,'no_viaje'=>$data['num_viaje'],'cond_pago'=>$data['condicion_pago'],'marca_update'=> $marca_update,'updated_at'=>$fecha]);
-      $aux_dispo= $disponibilidad - $data['cant_prog'];
-      DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->update(['dispo_real'=>$aux_dispo]);
-
-         $dispo_aux= DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->value('dispo_real');
-         $x=gettype($dispo_aux);
-           return response()->json([
-             'msg' => $dispo_aux,
-           'articulo_id'=>$articulo_id,]);
-                //  return $dispo_aux;
+        if ($disponibilidad>= $data['cant_prog']) {
+               $cantPendiente= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
+                                      ->where('sucursal_id', $sucursal_id)->value('cant_pendiente');
+                if ($cantPendiente<$data['cant_prog'] || $cantPendiente == 0) {
+                  $msg= "La cantidad programada excede la cantida pendiente";
+                  return response()->json([
+                  'msg' => $msg,]);
 
 
+                   }else {
 
-
-  //$msg;
-      }else {
-        $msg= "La cantidad programada excede la disponibilidad de articulo";
-        return response()->json([
-        'msg' => $msg,]);
-      }
-  }
-
-
-
-
-
-
-//----
-      /*    $prog_art= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
-                                     ->where('sucursal_id', $sucursal_id)
-                                     ->update(['cant_programado' => $data['cant_prog'],'costo_programado' =>$data['cost_prog'] ,'no_viaje'=>$data['num_viaje'],'cond_pago'=>$data['condicion_pago'],'marca_update'=> $marca_update ]);
-
-        // echo ''.$articulo.'a la factura No:'. $no_doc.'-';
-         $dispo_aux= DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->value('dispo_real');
-         $x=gettype($dispo_aux);
-         return response()->json([
-       'msg' => $dispo_aux,]);
-    */
-//  ---------
-
-
-
-
-      /* if ($validationsql>0) {
-            $old_cant_prog= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
-                                 ->where('sucursal_id', $sucursal_id)->value('cant_programado');
-           $new_cant_prog=$data['cant_prog'];
-           $cant_faltante=$new_cant_prog-$old_cant_prog;
-
-
-      //----------------------------------------------------------
-
-      $old_cant_prog= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
-                           ->where('sucursal_id', $sucursal_id)->value('cant_programado');
-     $new_cant_prog=$data['cant_prog'];
-     $cant_faltante=$new_cant_prog-$old_cant_prog;
-
-     if (is_null($old_cant_prog)) {
-       $prog_art= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
-                                  ->where('sucursal_id', $sucursal_id)
-                                  ->update(['cant_programado' => $data['cant_prog'],'costo_programado' =>$data['cost_prog'] ,'no_viaje'=>$data['num_viaje'],'cond_pago'=>$data['condicion_pago'],'marca_update'=> $marca_update ]);
-
-        $dispo_aux= DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->value('dispo_real');
-        $x=gettype($dispo_aux);
-          return response()->json([
-            'msg' => $dispo_aux,]);
-               //  return $dispo_aux;
-             }else{
-               switch (TRUE) {
-                 case ($cant_faltante>0):
-                 $prog_art= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
-                                            ->where('sucursal_id', $sucursal_id)
-                                            ->update(['cant_programado' => $cant_faltante,'costo_programado' =>$data['cost_prog'] ,'no_viaje'=>$data['num_viaje'],'cond_pago'=>$data['condicion_pago'],'marca_update'=> $marca_update ]);
-
-                  $dispo_aux= DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->value('dispo_real');
-                  $x=gettype($dispo_aux);
-                    return response()->json([
-                      'msg' => $dispo_aux,]);
-                   break;
-                   case ($cant_faltante<0):
-                   $reset_dispo=$disponibilidad-$old_cant_prog;
-                   //valor absoluto
-                   $parse_new_cant=abs($cant_faltante);
-
-                   $dispo_update=DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->update(['dispo_real'=>$reset_dispo]);
+                  $aux_cant_pendiente = $cantPendiente - $data['cant_prog'];
 
                    $prog_art= DB::table('detpedidos')->where('no_doc', $no_doc)->where('articulo_id', $articulo_id)
-                                              ->where('sucursal_id', $sucursal_id)
-                                              ->update(['cant_programado' => $cant_faltante,'costo_programado' =>$data['cost_prog'] ,'no_viaje'=>$data['num_viaje'],'cond_pago'=>$data['condicion_pago'],'marca_update'=> $marca_update ]);
+                                               ->where('sucursal_id', $sucursal_id)
+                                               ->update(['cant_programado' => $data['cant_prog'],'costo_programado' =>$data['cost_prog'] ,'cant_pendiente'=>$aux_cant_pendiente, 'no_viaje'=>$data['num_viaje'],'cond_pago'=>$data['condicion_pago'],'marca_update'=> $marca_update,'updated_at'=>$fecha]);
 
-                  $dispo_aux= DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->value('dispo_real');
+                    $aux_dispo= $disponibilidad - $data['cant_prog'];
+                    DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->update(['dispo_real'=>$aux_dispo]);
 
+                    $dispo_aux= DB::table('inventario')->where('id', $id_inventario)->where('articulo_id', $articulo_id)->value('dispo_real');
+                    $valor_pedido= DB::table('detpedidos')->where('no_doc', $no_doc)->sum('costo_programado');
+                    $x=gettype($dispo_aux);
 
+                    return response()->json([
+                         'msg' => $dispo_aux,
+                         'articulo_id'=>$articulo_id,
+                         'aux_id'=> $aux_id,
+                         'aux_cant_pend'=>$aux_cant_pendiente,
+                         'aux_no_doc'=> $no_doc,
+                       'aux_valor_pedido'=> $valor_pedido,]);
+                   }
 
-                   return response()->json([
-                     'msg' => $dispo_aux,]);
-                   break;
-                   case ($cant_faltante=0):
-                   return response()->json([
-                     'msg' => 'cantidad programda nueva = cantidad programada antigua',]);
-                   break;
+          }else {
+            $msg= "La cantidad programada excede la disponibilidad de articulo";
+            return response()->json([
+            'msg' => $msg,]);
+          }
 
-                   default:
-                   return response()->json([
-                     'msg' => 'no cumples con la condiciones',]);
-                   break;
-
-               }
-
-             }
-
-
-
-
-//------------------------------
-
-
-
-
-              }else {
-                  //  echo "-".$no_doc.'-'.$articulo_id.'-'.$sucursal_id;
-                 echo "no existe registro";
-               }
-               */
-
-
-
-
-
+      }
 
   }
 
@@ -328,11 +221,43 @@ class DetpedidosController extends Controller
      $datos=$request->input("check_list");
         //echo count($datos);
       //  dd($datos);
+
+
+                  $cont = array();
+                  $aux_client=array();
+
+                  for ($i=0; $i < count($datos) ; $i++) {
+                  //  echo $datos[$i].'<br>';
+                  //$val[0]:no_doc,$val[1]:sucursal_id,$val[3]:articulo_id
+                    $val=explode(",",$datos[$i]);
+                         $a= $val[0];
+
+                          if(isset($cont[$a])){
+                           //dd($k);
+
+                               $cont[$a]=$cont[$a]+1;
+                              // echo $cont[$a];
+                         }else {
+                           $cliente= DB::table('sucursal_cliente')->where('id', $val[1])->value('razon_sucursal');
+                           $aux=[
+                             "no_doc"=>$val[0],
+                             "id_sucursal"=>$val[1],
+                             "sucursal"=>$cliente,
+
+                           ];
+                            array_push($aux_client,$aux);
+                               $cont[$a]=1;
+                           }
+                       }
+
+        // dd($aux_client);
+
+
         $array_stock=array();
         $array_aux=array();
         for ($i=0; $i <count($datos) ; $i++) {
           $val=explode(",",$datos[$i]);
-
+          //dd($val);
            $aux_stock = [
                 "id"=>$val[2],
                  "referencia" => $val[4],
@@ -344,9 +269,9 @@ class DetpedidosController extends Controller
 
 
       }
+      //  dd($array_stock);
 
-
-      $id_inventario =  Stock::orderBy('id', 'desc')->first()->id;
+        $id_inventario =  Stock::orderBy('id', 'desc')->first()->id;
         $arraydatos= array();
         $arraydispo=array();
         for ($i=0; $i < count($datos) ; $i++) {
@@ -369,12 +294,12 @@ class DetpedidosController extends Controller
                   ->where('articulo_id', $val[2])->getQuery()
                   ->get();
 
-                  array_push($arraydatos,$val[3]);
+                //  array_push($arraydatos,$val[3]);
                 array_push($arraydispo, $dispo_arts);
                array_push($arraydatos, $d);
 
 
-
+                // dd($val);
 
 
         }
@@ -409,7 +334,7 @@ class DetpedidosController extends Controller
 
 
 
-          return view('list_disp', compact('arraydatos','aux'));
+          return view('list_disp', compact('arraydatos','aux','aux_client'));
         //array_push($arraydatos, $compact);
       //  dd($arraydatos);
       // dd($aux);

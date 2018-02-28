@@ -3,7 +3,7 @@
 @section('content')
 
   <div class="card mb-3">
-      <form class="" action="{{ route('detpedidos.completar') }}" method="post">
+
     <div class="card-header">
       <i class="fa fa-table"></i>
       Disponibilidad de artículos
@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    </form>
+
  </div>
 
 

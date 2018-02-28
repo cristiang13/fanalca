@@ -12,13 +12,13 @@ class Articulo extends Model
   * @var string
   */
  protected $table = 'articulos';
-
+ public $timestamps = false;
  /**
   * The attributes that are mass assignable.
   *
   * @var array
   */
- protected $fillable = ['referencia', 'desc_detalle'];
+ protected $fillable = ['referencia', 'desc_detalle','precio_unit'];
 
  public function detpedidos()
    {
